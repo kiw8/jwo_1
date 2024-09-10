@@ -1,32 +1,21 @@
 import numpy as np
+import nnfs
+from nnfs.datasets import spiral_data
+import matplotlib.pyplot as plt
 
-inputs = [[1.0,2.0,3.0,2.5],
-          [2.0,5.0,-1.0,2.0],
-          [-1.5,2.7,3.3,-0.8],
-          [2.0, 1.8, -0.5, -1.3],
-          [1.3, 2.25, 1.8, 1.5]]
+class Layer_Dense:
+    def __init__(self, n_inputs, n_neurons):
+        self.weights = (np.random.uniform(0,1,(n_inputs,n_neurons)))
+        self.biases = np.random.uniform(0,1,(1,n_neurons))
 
-weights = [[0.2,0.8,-0.5,1.0],
-           [0.5,-0.91,0.26,-0.5],
-           [-0.26,-0.27,0.17,0.87]]
+    def forward(self, inputs):
+        return np.dot(inputs, np.array(self.weights)) + self.biases
 
-biases = [2.0,3.0,0.5]
+inputs,y = spiral_data(samples=100, classes=3)
+plt.scatter(inputs[:,0] ,inputs[:,1] ,c=y, cmap ='brg')
+plt.show()
 
-layers_outputs = np.dot(inputs,np.array(weights).T)+biases
-print(layers_outputs)
+DNN = Layer_Dense(2,5)
 
-weights_2 = [[0.8,0.1,-0.3],
-           [0.4,-0.51,0.13],
-           [-0.13,-0.25,0.11]]
-
-biases_2 = [1.0,2.0,0.8]
-
-layers_outputs2 = np.dot(layers_outputs, np.array(weights_2).T)+biases_2
-print(layers_outputs2)
-
-
-
-
-
-
-
+outputs = DNN.forward(inputs)
+print(outputs)
